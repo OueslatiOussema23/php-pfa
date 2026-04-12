@@ -1,0 +1,4 @@
+1 ajouter les notification (Bootstrap Toasts)
+2 lier la logiue de login avec l'html (Instancier la classe Authcontroller)
+3 maybe delete PageController (idk yet)
+4 add the routing to the class (simply to apply some logic such as )
