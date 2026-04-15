@@ -8,7 +8,7 @@
         protected ?DateTime $dateDemabauche = null; //pour savoir l'anciennete de prof
         protected ?string $diplome = null; //son diplome
         protected ?string $specialite = null; //sa specialite
-        protected bool $estProffesseurPrincipale = FALSE; //sera plus util apres (tableau de bord de directeur)
+        protected bool $estProfesseurPrincipale = FALSE; //sera plus util apres (tableau de bord de directeur)
         protected array $matierres = []; //les matierres qui enseigne I
         protected array $classes = []; //les classes qui enseigne II
 

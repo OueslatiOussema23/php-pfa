@@ -1,31 +1,13 @@
 <?php
 
+    namespace App\Controllers;
+    use App\Models\Enseignant;
+
     class EnseignantController{
         private ?Enseignant $enseignant;
 
         //constructeur: initialisation d'objet avec la creation d'une session
-        public function __construct(){
-            
-            //initialisation d'objet avec la creation d'une session
-            if(session_status() === "PHP_SESSION_NONE"){
-                session_start();
-            }
-
-            //verifiant que enseignant n'est pas connecte(dans ce cas on le rederige au log in)
-            if(!isset($_SESSION["user_id"])){
-                header('location: /login');
-                exit();
-            }
-
-            //s'il est connecte et il existe dans ma base je recupere toutes ses donnees
-            $this->enseignant = Enseignant::find($_SESSION["user_id"]);
-
-            //une couche suplementaire de securite : on verifie s'il est vraiment un enseignant
-            if(!$this->enseignant || $this->enseignant->getRole() !== 'enseignant'){
-                header('location: /login');
-                exit();
-            }
-        }
+        //public function __construct(){}
 
         //les methodes : Dashboard, faire l'appel, saisir les notes, et un to do list
         
@@ -43,6 +25,25 @@
             
             //l'appel au repertoire des vues "les interfaces"
             require_once __DIR__  . '/Views/Enseignant/Dashboard.php';
+        }
+
+        //rouer proprement chaque enseignant
+        public function routerEns() : bool {
+            if(isset($_SESSION["user"]) && !empty($_SESSION["user"])){
+                if($_SESSION["user"]['role'] === "ENS"){
+                    return TRUE;
+                }else{
+                    http_response_code(403);
+                    echo "<h1>ERROR-403 Accès interdit</h1> <br>";
+                    echo "<p>Vous n'avez pas les droits pour accéder à cette page</p> <br>";
+                    echo "<a href='/pfa'>Revenir a la page d'acceuille</a>";
+                    
+                    return FALSE;
+                }
+            }else{
+                header('Location: /pfa/index.php?url=login');
+                exit;
+            }
         }
 
 
