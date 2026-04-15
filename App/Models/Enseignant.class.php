@@ -54,6 +54,14 @@
         }
 
         public function getClasses() : array {
-            return $this->classes;
+            
+            $sql = "SELECT nomClasse 
+                    FROM classes c 
+                    JOIN enseignants e 
+                    ON c.idEns = e.id 
+                    JOIN users u 
+                    ON e.user_id = u.id 
+                    WHERE u.id = 2";
+            return $this->->fetchAll($sql, $_SESSION["user"]['id']);
         }
     }

@@ -1,2 +1,7 @@
 [TIME: 2026-04-15 12:28:10]	[USER: GUEST]	[IP: 127.0.0.1]	[LOG: logged in successfully for prof@school.com]
 [TIME: 2026-04-15 13:20:43]	[USER: GUEST]	[IP: 127.0.0.1]	[LOG: logged in successfully for prof@school.com]
+[TIME: 2026-04-15 15:59:25]	[USER: GUEST]	[IP: 127.0.0.1]	[LOG: Failed to log in - empty fields ]
+[TIME: 2026-04-15 15:59:45]	[USER: GUEST]	[IP: 127.0.0.1]	[LOG: logged in successfully for prof@school.com]
+[TIME: 2026-04-15 16:03:56]	[USER: GUEST]	[IP: 127.0.0.1]	[LOG: logged in successfully for prof@school.com]
+[TIME: 2026-04-15 16:25:43]	[USER: GUEST]	[IP: 127.0.0.1]	[LOG: Failed to log in - wrong password for prof@school.com]
+[TIME: 2026-04-15 16:26:00]	[USER: Martin]	[IP: 127.0.0.1]	[LOG: logged in successfully for prof@school.com]

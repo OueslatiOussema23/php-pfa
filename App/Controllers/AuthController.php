@@ -50,7 +50,7 @@
             //les parametres a recuperer
             $ip = $_SERVER["REMOTE_ADDR"]?? '';
             $time = date('Y-m-d H:i:s');
-            $userId = $_SESSION["user_id"] ?? 'GUEST';
+            $userId = $_SESSION["user"]['nom'] ?? 'GUEST';
 
             //mise en forme
             $content = "[TIME: $time]\t[USER: $userId]\t[IP: $ip]\t[LOG: $log]\r\n";
@@ -115,7 +115,6 @@
 
             //en cas ou il y aucune erreur
             
-            $this->logger("logged in successfully for " . $email);
             unset($_SESSION["user"]);
             $_SESSION["user"] = [
                 'id' => $user->getId(),
@@ -124,7 +123,8 @@
                 'email' => $user->getEmail(),
                 'role' => $user->getRole()
             ];
-            
+                
+            $this->logger("logged in successfully for " . $email);
             $this->redirigerSelonRole($user->getRole());
             $user->successfullLogin();
         }   
