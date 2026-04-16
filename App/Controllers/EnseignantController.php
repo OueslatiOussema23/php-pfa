@@ -7,7 +7,96 @@
         private ?Enseignant $enseignant;
 
         //constructeur: initialisation d'objet avec la creation d'une session
-        //public function __construct(){}
+        public function __construct(){
+            if(isset($_SESSION["user"]["id"])) {
+            $this->enseignant = Enseignant::findByUserId($_SESSION["user"]["id"]);
+            }
+        }
+
+            public function selectForm() : void {
+            if(!$this->enseignant) {
+                header('Location: /pfa/index.php?url=login');
+                exit;
+            }
+        
+            // Récupérer les classes et matières de l'enseignant
+            $classes = $this->enseignant->getClasses();
+            $matieres = $this->enseignant->getMatieres();
+            
+            // Récupérer l'action (notes ou appel) depuis l'URL
+            $action = $_GET['action'] ?? '';
+            
+            $titre = "Sélectionner une classe et une matière";
+            $view = "selectionForm";
+            require_once __DIR__ . '/../../plain.inc.php';
+        }
+        public function processSelection() : void {
+        if($_SERVER["REQUEST_METHOD"] !== "POST") {
+            header('Location: /pfa/index.php?url=enseignant/dashboard');
+            exit;
+        }
+        
+        $classeId = $_POST['classe'] ?? '';
+        $matiere = $_POST['matiere'] ?? '';
+        $action = $_POST['action'] ?? '';
+        
+        if(empty($classeId) || empty($matiere) || empty($action)) {
+            $_SESSION['error'] = "Veuillez sélectionner une classe et une matière";
+            header('Location: /pfa/index.php?url=enseignant/selectForm&action=' . $action);
+            exit;
+        }
+        
+        // Rediriger vers la page spécifique
+        switch($action) {
+            case 'notes':
+                header("Location: /pfa/index.php?url=enseignant/ajouterNotes&classe=$classeId&matiere=$matiere");
+                break;
+            case 'appel':
+                header("Location: /pfa/index.php?url=enseignant/ficheAppel&classe=$classeId&matiere=$matiere");
+                break;
+            default:
+                header('Location: /pfa/index.php?url=enseignant/dashboard');
+        }
+        exit;
+    }
+    
+    // Page Ajouter Notes
+    public function ajouterNotes() : void {
+        $classeId = $_GET['classe'] ?? '';
+        $matiere = $_GET['matiere'] ?? '';
+        
+        if(empty($classeId) || empty($matiere)) {
+            header('Location: /pfa/index.php?url=enseignant/selectForm&action=notes');
+            exit;
+        }
+        
+        // Récupérer les élèves de la classe
+        $eleves = $this->enseignant->getElevesByClasse($classeId);
+        
+        $titre = "Ajouter des notes - " . ucfirst($matiere);
+        $view = "ajouterNotes";
+        require_once __DIR__ . '/../../plain.inc.php';
+    }
+    
+    // Page Feuille d'appel
+    public function ficheAppel() : void {
+        $classeId = $_GET['classe'] ?? '';
+        $matiere = $_GET['matiere'] ?? '';
+        
+        if(empty($classeId) || empty($matiere)) {
+            header('Location: /pfa/index.php?url=enseignant/selectForm&action=appel');
+            exit;
+        }
+        
+        // Récupérer les élèves de la classe
+        $eleves = $this->enseignant->getElevesByClasse($classeId);
+        
+        $titre = "Feuille d'appel - " . ucfirst($matiere);
+        $view = "ficheAppel";
+        require_once __DIR__ . '/../../plain.inc.php';
+    }
+
+        
 
         //les methodes : Dashboard, faire l'appel, saisir les notes, et un to do list
         
@@ -45,7 +134,4 @@
                 exit;
             }
         }
-
-
-
     }

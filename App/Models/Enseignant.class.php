@@ -1,5 +1,6 @@
 <?php
-
+    namespace App\Models;
+    use DateTime;
     class Enseignant extends User{
         
         //des informations de plus sur l'enseignant
@@ -13,6 +14,44 @@
         protected array $classes = []; //les classes qui enseigne II
 
         //I et II ca aide plus tard a selectioner les tables de la base de donnee
+        
+        public static function findByUserId(int $userId): ?Enseignant {
+    $enseignant = new self();
+    $sql = "SELECT * FROM enseignants WHERE user_id = ?";
+    $data = $enseignant->fetchOne($sql, [$userId]);
+    
+    if($data && !empty($data)){
+        // Hydrater les données de l'enseignant
+        foreach($data as $key => $value){
+            if(property_exists($enseignant, $key)){
+                if(($key === 'dateDemabauche') && !empty($value)){
+                    $enseignant->$key = new DateTime($value);
+                } elseif($key !== 'dateDemabauche') {
+                    $enseignant->$key = $value;
+                }
+            }
+        }
+        
+        // Récupérer aussi les infos User (sans les dates problématiques)
+        $sqlUser = "SELECT id, nom, prenom, email, numeroDeTelephon, role, passwordHash, failedAttempts FROM users WHERE id = ?";
+        $userData = $enseignant->fetchOne($sqlUser, [$userId]);
+        if($userData && !empty($userData)){
+            foreach($userData as $key => $value){
+                if(property_exists($enseignant, $key)){
+                    $enseignant->$key = $value;
+                }
+            }
+        }
+        
+        // Initialiser les dates à maintenant si elles sont null
+        $enseignant->dateDeCreation = $enseignant->dateDeCreation ?? new DateTime();
+        $enseignant->dernierLogin = $enseignant->dernierLogin ?? new DateTime();
+        $enseignant->dateDeMiseAjour = $enseignant->dateDeMiseAjour ?? new DateTime();
+        
+        return $enseignant;
+    }
+    return null;
+}
 
         //---GETERS---
         public function getMatierrePrincipale() : ?string {
@@ -61,7 +100,38 @@
                     ON c.idEns = e.id 
                     JOIN users u 
                     ON e.user_id = u.id 
-                    WHERE u.id = 2";
-            return $this->->fetchAll($sql, $_SESSION["user"]['id']);
+                    WHERE u.id = ?";
+            $userId = $_SESSION["user"]["id"];
+            $resultat =  $this->fetchAll($sql, [$userId]);
+            return $resultat ?: [];
         }
+
+        public function getEnsId() : array {
+            $sql = "SELECT e.id 
+                    FROM enseignants e 
+                    JOIN users u 
+                    ON e.user_id = u.id
+                    WHERE u.id = ?";
+            $userId = $_SESSION["user"]['id'];
+            $resultat =  $this->fetchOne($sql, [$userId]);
+            return $resultat;
+        }
+
+        public function getMatieres() : array {
+            
+            $sql = "SELECT nom
+                    FROM matierres m
+                    JOIN enseigner e 
+                    ON m.id = e.idMatierre
+                    WHERE e.idEns = ?";
+            $userId = $this->getEnsId();
+            $resultat =  $this->fetchAll($sql, [$userId]);
+            return $resultat;
+        }
+
+        public function getElevesByClasse(int $classeId) : array {
+            $sql = "SELECT * FROM etudiants WHERE classe_id = ? ORDER BY nom, prenom";
+            return $this->fetchAll($sql, [$classeId]) ?: [];
+        }
+
     }

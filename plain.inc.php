@@ -18,6 +18,7 @@
         }
     ?>
     <div class="container-fluid">
+    
         <div class="row" style="height: 100vh;">
             <div class="col-2 col-sm-3 col-xl-2 bg-dark">
                 <div class="container">
@@ -50,10 +51,31 @@
                     </div>
                 </nav>
                 <div class="container">
-                    <?php require_once $view . ".php";?>
+                
+
+        <?php 
+        // Chercher la vue dans le dossier Views/Enseignant/
+        $viewPath = __DIR__ . '/Views/Enseignant/' . $view . '.php';
+        
+        if(file_exists($viewPath)) {
+            require_once $viewPath;
+        } else {
+            // Si pas trouvé, essayer à la racine
+            $viewPath = __DIR__ . '/' . $view . '.php';
+            if(file_exists($viewPath)) {
+                require_once $viewPath;
+            } else {
+                echo "<div class='alert alert-danger'>";
+                echo "<strong>Erreur :</strong> Vue non trouvée : " . htmlspecialchars($view) . "<br>";
+                echo "Chemin recherché : " . $viewPath;
+                echo "</div>";
+            }
+        }
+        ?>
+
                 </div>
         </div>
     </div>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>

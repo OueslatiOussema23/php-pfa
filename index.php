@@ -64,22 +64,19 @@
             }
             break;
 
-        case 'enseignant/ficheAppel':
+        case 'enseignant/selectForm':
             $controller = new EnseignantController();
-            if($controller->routerEns()){
-                    $titre = "Fiche d'appel";
-                    $view = "ficheDAppel";
-                    require_once 'plain.inc.php';
-            }
+            $controller->selectForm();
+            break;
+
+        case 'enseignant/ficheAppel':
+                $controller = new EnseignantController();
+                $controller->ficheAppel();
             break;
         
         case 'enseignant/ajouterNotes':
             $controller = new EnseignantController();
-            if($controller->routerEns()){
-                $titre = "Feuille de note";
-                $view = "ajouterNotes";
-                require_once 'plain.inc.php';
-            }
+            $controller->ajouterNotes();
             break;
 
         //Directeur
