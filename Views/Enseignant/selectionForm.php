@@ -39,7 +39,7 @@
                             <option value="">Sélectionner une matière</option>
                             <?php foreach($matieres as $matiere): ?>
                                 <option value="<?= $matiere ?>">
-                                    <?= ucfirst($matiere) ?>
+                                    <?= $matiere['nom'] ?>
                                 </option>
                             <?php endforeach; ?>
                         </select>

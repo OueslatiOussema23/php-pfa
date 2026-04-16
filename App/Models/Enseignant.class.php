@@ -106,7 +106,7 @@
             return $resultat ?: [];
         }
 
-        public function getEnsId() : array {
+        public function getEnsId() : ?int {
             $sql = "SELECT e.id 
                     FROM enseignants e 
                     JOIN users u 
@@ -114,19 +114,20 @@
                     WHERE u.id = ?";
             $userId = $_SESSION["user"]['id'];
             $resultat =  $this->fetchOne($sql, [$userId]);
-            return $resultat;
+            return $resultat ? (int) $resultat['id'] : null;;
         }
 
         public function getMatieres() : array {
-            
+            $ensId = $this->getEnsId();
+            if(!$ensId){
+                $ensId = [];
+            }
             $sql = "SELECT nom
                     FROM matierres m
                     JOIN enseigner e 
                     ON m.id = e.idMatierre
                     WHERE e.idEns = ?";
-            $userId = $this->getEnsId();
-            $resultat =  $this->fetchAll($sql, [$userId]);
-            return $resultat;
+            return $this->fetchAll($sql, [$ensId]) ?: [];
         }
 
         public function getElevesByClasse(int $classeId) : array {
