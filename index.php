@@ -68,6 +68,10 @@
             $controller = new EnseignantController();
             $controller->selectForm();
             break;
+        case 'enseignant/processSelection':
+            $controller = new EnseignantController();
+            $controller->processSelection();
+            break;
 
         case 'enseignant/ficheAppel':
                 $controller = new EnseignantController();

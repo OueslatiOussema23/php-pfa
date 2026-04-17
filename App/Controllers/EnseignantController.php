@@ -36,11 +36,11 @@
             exit;
         }
         
-        $classeId = $_POST['classe'] ?? '';
+        $classe = $_POST['classe'] ?? '';
         $matiere = $_POST['matiere'] ?? '';
         $action = $_POST['action'] ?? '';
         
-        if(empty($classeId) || empty($matiere) || empty($action)) {
+        if(empty($classe) || empty($matiere) || empty($action)) {
             $_SESSION['error'] = "Veuillez sélectionner une classe et une matière";
             header('Location: /pfa/index.php?url=enseignant/selectForm&action=' . $action);
             exit;
@@ -49,10 +49,10 @@
         // Rediriger vers la page spécifique
         switch($action) {
             case 'notes':
-                header("Location: /pfa/index.php?url=enseignant/ajouterNotes&classe=$classeId&matiere=$matiere");
+                header('Location: /pfa/index.php?url=enseignant/ficheAppel&classe=$classe&matiere=$matiere');
                 break;
             case 'appel':
-                header("Location: /pfa/index.php?url=enseignant/ficheAppel&classe=$classeId&matiere=$matiere");
+                header('Location: /pfa/index.php?url=enseignant/ficheAppel&classe=$classe&matiere=$matiere');
                 break;
             default:
                 header('Location: /pfa/index.php?url=enseignant/dashboard');
@@ -80,7 +80,7 @@
     
     // Page Feuille d'appel
     public function ficheAppel() : void {
-        $classeId = $_GET['classe'] ?? '';
+        $classe = $_GET['classe'] ?? '';
         $matiere = $_GET['matiere'] ?? '';
         
         if(empty($classeId) || empty($matiere)) {
@@ -89,11 +89,12 @@
         }
         
         // Récupérer les élèves de la classe
-        $eleves = $this->enseignant->getElevesByClasse($classeId);
+        $eleves = $this->enseignant->getElevesByClasse($classe);
         
         $titre = "Feuille d'appel - " . ucfirst($matiere);
         $view = "ficheAppel";
-        require_once __DIR__ . '/../../plain.inc.php';
+        $viewPath = __DIR__ . '/../Views/Enseignant/' . $view . '.php';
+        require_once $viewPath;
     }
 
         

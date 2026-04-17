@@ -106,6 +106,18 @@
             return $resultat ?: [];
         }
 
+        public function getIdClasse($nomC) : ?int {
+            if(!$nomC){
+                $nomC = [];
+            }
+            $sql = "SELECT id 
+                    FROM classes  
+                    WHERE nomClasse = ?";
+            
+            $resultat = $this->fetchOne($sql, [$nomC]);
+            return $resultat ? (int) $resultat['id'] : null;
+        }
+
         public function getEnsId() : ?int {
             $sql = "SELECT e.id 
                     FROM enseignants e 
@@ -114,7 +126,7 @@
                     WHERE u.id = ?";
             $userId = $_SESSION["user"]['id'];
             $resultat =  $this->fetchOne($sql, [$userId]);
-            return $resultat ? (int) $resultat['id'] : null;;
+            return $resultat ? (int) $resultat['id'] : null;
         }
 
         public function getMatieres() : array {
@@ -130,9 +142,19 @@
             return $this->fetchAll($sql, [$ensId]) ?: [];
         }
 
-        public function getElevesByClasse(int $classeId) : array {
-            $sql = "SELECT * FROM etudiants WHERE classe_id = ? ORDER BY nom, prenom";
+        public function getElevesByClasse($nomC) : array {
+            $classeId = $this->getIdClasse($nomC);
+            if(!$classeId){
+                $classeId = [];
+            }
+
+            $sql = "SELECT nom, prenom
+                    FROM eleves 
+                    WHERE idClasse = ?
+                    ORDER BY nom, prenom";
             return $this->fetchAll($sql, [$classeId]) ?: [];
         }
+
+        
 
     }
