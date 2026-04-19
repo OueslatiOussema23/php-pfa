@@ -21,7 +21,7 @@
                                 <option value="">Sélectionner une classe</option>
                                 <?php if(!empty($classes) && is_array($classes)): ?>
                                     <?php foreach($classes as $classe): ?>
-                                        <option value="<?= htmlspecialchars($classe['nomClasse']) ?>" >
+                                        <option value="<?= htmlspecialchars($classe['id']) ?>" >
                                             <?= htmlspecialchars($classe['nomClasse']) ?>
                                         </option>
                                     <?php endforeach; ?>

@@ -94,7 +94,7 @@
 
         public function getClasses() : array {
             
-            $sql = "SELECT nomClasse 
+            $sql = "SELECT nomClasse, c.id 
                     FROM classes c 
                     JOIN enseignants e 
                     ON c.idEns = e.id 
@@ -106,17 +106,7 @@
             return $resultat ?: [];
         }
 
-        public function getIdClasse($nomC) : ?int {
-            if(!$nomC){
-                $nomC = [];
-            }
-            $sql = "SELECT id 
-                    FROM classes  
-                    WHERE nomClasse = ?";
-            
-            $resultat = $this->fetchOne($sql, [$nomC]);
-            return $resultat ? (int) $resultat['id'] : null;
-        }
+        
 
         public function getEnsId() : ?int {
             $sql = "SELECT e.id 
@@ -142,13 +132,13 @@
             return $this->fetchAll($sql, [$ensId]) ?: [];
         }
 
-        public function getElevesByClasse($nomC) : array {
-            $classeId = $this->getIdClasse($nomC);
+        public function getElevesByClasse($id) : array {
+            $classeId = $id;
             if(!$classeId){
                 $classeId = [];
             }
 
-            $sql = "SELECT nom, prenom
+            $sql = "SELECT nom, prenom, id
                     FROM eleves 
                     WHERE idClasse = ?
                     ORDER BY nom, prenom";

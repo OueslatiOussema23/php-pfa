@@ -1,6 +1,6 @@
 
 <?php
-
+ob_start();
     session_start();
 
     //j'appelle mon autoloader
@@ -96,3 +96,5 @@
             echo "<a href='/pfa'>Revenir a la page d'acceuille</a>";
             break;
         }
+
+        ob_end_flush();

@@ -1,5 +1,4 @@
 <?php
-
     namespace App\Controllers;
     use App\Models\Enseignant;
 
@@ -30,29 +29,35 @@
             $view = "selectionForm";
             require_once __DIR__ . '/../../plain.inc.php';
         }
+
         public function processSelection() : void {
+            ob_clean();
         if($_SERVER["REQUEST_METHOD"] !== "POST") {
             header('Location: /pfa/index.php?url=enseignant/dashboard');
             exit;
         }
         
-        $classe = $_POST['classe'] ?? '';
-        $matiere = $_POST['matiere'] ?? '';
-        $action = $_POST['action'] ?? '';
+        $classe = trim($_POST['classe']) ?? '';
+        $matiere = trim($_POST['matiere']) ?? '';
+        $action = trim($_POST['action']) ?? '';
         
         if(empty($classe) || empty($matiere) || empty($action)) {
             $_SESSION['error'] = "Veuillez sélectionner une classe et une matière";
-            header('Location: /pfa/index.php?url=enseignant/selectForm&action=' . $action);
+            header("Location: /pfa/index.php?url=enseignant/selectForm&action=" . $action);
             exit;
         }
         
         // Rediriger vers la page spécifique
         switch($action) {
             case 'notes':
-                header('Location: /pfa/index.php?url=enseignant/ficheAppel&classe=$classe&matiere=$matiere');
+                $redirectUrl = "/pfa/index.php?url=enseignant/ajouterNotes&classe=$classe&matiere=$matiere";
+                header("Location: " . trim($redirectUrl));
+                
                 break;
             case 'appel':
-                header('Location: /pfa/index.php?url=enseignant/ficheAppel&classe=$classe&matiere=$matiere');
+                $redirectUrl = "/pfa/index.php?url=enseignant/ficheAppel&classe=$classe&matiere=$matiere";
+                header("Location: " . trim($redirectUrl));
+                
                 break;
             default:
                 header('Location: /pfa/index.php?url=enseignant/dashboard');
@@ -62,18 +67,18 @@
     
     // Page Ajouter Notes
     public function ajouterNotes() : void {
-        $classeId = $_GET['classe'] ?? '';
+        $classe = $_GET['classe'] ?? '';
         $matiere = $_GET['matiere'] ?? '';
         
-        if(empty($classeId) || empty($matiere)) {
-            header('Location: /pfa/index.php?url=enseignant/selectForm&action=notes');
+        if(empty($classe) || empty($matiere)) {
+            header("Location: /pfa/index.php?url=enseignant/selectForm&action=notes");
             exit;
         }
         
         // Récupérer les élèves de la classe
-        $eleves = $this->enseignant->getElevesByClasse($classeId);
+        $eleves = $this->enseignant->getElevesByClasse($classe);
         
-        $titre = "Ajouter des notes - " . ucfirst($matiere);
+        $titre = "Ajouter des notes - ";
         $view = "ajouterNotes";
         require_once __DIR__ . '/../../plain.inc.php';
     }
@@ -83,18 +88,18 @@
         $classe = $_GET['classe'] ?? '';
         $matiere = $_GET['matiere'] ?? '';
         
-        if(empty($classeId) || empty($matiere)) {
-            header('Location: /pfa/index.php?url=enseignant/selectForm&action=appel');
+        if(empty($classe) || empty($matiere)) {
+            header("Location: /pfa/index.php?url=enseignant/selectForm&action=appel");
             exit;
         }
         
         // Récupérer les élèves de la classe
         $eleves = $this->enseignant->getElevesByClasse($classe);
         
-        $titre = "Feuille d'appel - " . ucfirst($matiere);
+        $titre = "Feuille d'appel";
         $view = "ficheAppel";
-        $viewPath = __DIR__ . '/../Views/Enseignant/' . $view . '.php';
-        require_once $viewPath;
+        
+        require_once __DIR__ . '/../../plain.inc.php';
     }
 
         
