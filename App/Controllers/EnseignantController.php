@@ -50,12 +50,12 @@
         // Rediriger vers la page spécifique
         switch($action) {
             case 'notes':
-                $redirectUrl = "/pfa/index.php?url=enseignant/ajouterNotes&classe=$classe&matiere=$matiere";
+                $redirectUrl = "/pfa/index.php?url=enseignant/ajouterNotes&classe=". urlencode($classe) ."&matiere=" . urlencode($matiere);
                 header("Location: " . trim($redirectUrl));
                 
                 break;
             case 'appel':
-                $redirectUrl = "/pfa/index.php?url=enseignant/ficheAppel&classe=$classe&matiere=$matiere";
+                $redirectUrl = "/pfa/index.php?url=enseignant/ficheAppel&classe=". urlencode($classe) ."&matiere=" . urlencode($matiere);
                 header("Location: " . trim($redirectUrl));
                 
                 break;
