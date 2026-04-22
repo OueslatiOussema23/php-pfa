@@ -1,5 +1,4 @@
-<!-- cette page n'est pas dynamique pour le momment 
- il faut changer quelques trucs pour la rendre responsive selon le role -->
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -12,6 +11,29 @@
 <body>
     <?php
         if(isset($_SESSION["user"]) && !empty($_SESSION["user"])){
+            switch($_SESSION["user"]['role']){
+                case 'ENS':
+                    $role = 'Enseignant';
+                    $opt = "<a class='nav-link text-white' href='/pfa/enseignant/dashboard'>
+                            <i class='bi bi-speedometer2'></i><span class='d-none d-sm-inline ms-2'>Dashboard</span>
+                        </a>
+                        <a class='nav-link text-white' href='/pfa/enseignant/calendar'>
+                            <i class='bi bi-calendar-fill'></i><span class='d-none d-sm-inline ms-2'>Calendrier</span>
+                        </a>
+                        <a class='nav-link text-white' href='/pfa/enseignant/ficheAppel'>
+                            <i class='bi bi-journal'></i><span class='d-none d-sm-inline ms-2'>Feuille d'appel</span>
+                        </a>
+                        <a class='nav-link text-white' href='/pfa/enseignant/ajouterNotes'>
+                            <i class='bi bi-pencil-square'></i><span class='d-none d-sm-inline ms-2'>Saisir notes</span>
+                        </a>";
+                    break;
+                case 'ADMIN':
+                    $role = 'Administrateur';
+                    break;
+                case 'SURV':
+                    $role = 'Surveillant';
+                    break;
+            }
             require_once 'Views/Partials/toolbar.inc.php';
         }else{
             require_once 'Views/Partials/navbar.inc.php';
@@ -24,22 +46,12 @@
                 <div class="container">
                     <nav class="navbar bg-dark border-bottom border-white mb-3" data-bs-theme="dark">
                         <div class="container-fluid">
-                            <a href="" class="navbar-brand">Enseignant</a>
+                            <a href="" class="navbar-brand"><?= $role; ?></a>
                         </div>
                     </nav>
                     <nav class="nav flex-column">
-                        <a class="nav-link text-white" aria-current="" href="/dashboard">
-                            <i class="bi bi-speedometer2"></i><span class="d-none d-sm-inline ms-2">Dashboard</span>
-                        </a>
-                        <a class="nav-link text-white" href="/calendar">
-                            <i class="bi bi-calendar-fill"></i><span class="d-none d-sm-inline ms-2">Calendrier</span>
-                        </a>
-                        <a class="nav-link text-white" href="/pfa/enseignant/ficheAppel">
-                            <i class="bi bi-journal"></i><span class="d-none d-sm-inline ms-2">Feuille d'appel</span>
-                        </a>
-                        <a class="nav-link text-white" href="/pfa/enseignant/ajouterNotes">
-                            <i class="bi bi-pencil-square"></i><span class="d-none d-sm-inline ms-2">Saisir notes</span>
-                        </a>
+                
+                    <?= $opt; ?>
                     </nav>
                 </div>
             </div>
@@ -54,7 +66,7 @@
                 
 
         <?php 
-        // Chercher la vue dans le dossier Views/Enseignant/
+        
         $viewPath = __DIR__ . '/Views/Enseignant/' . $view . '.php';
         
         if(file_exists($viewPath)) {

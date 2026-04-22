@@ -124,7 +124,7 @@
             if(!$ensId){
                 $ensId = [];
             }
-            $sql = "SELECT nom
+            $sql = "SELECT nom, id
                     FROM matierres m
                     JOIN enseigner e 
                     ON m.id = e.idMatierre
@@ -145,6 +145,25 @@
             return $this->fetchAll($sql, [$classeId]) ?: [];
         }
 
-        
+        public function enregistrerAppel(int $eleveId, int $classeId, int $matiereId, bool $present): void {
+            
+            $sql = "INSERT INTO appels (eleveId, classeId, matierreId, statut) 
+            VALUES (?, ?, ?, ?)";
+            $this->execute($sql, [$eleveId, $classeId, $matiereId, $present]);
+        }
+
+        public function enregistrerNote(int $eleveId, int $classeId, int $matiereId, float $note) : void {
+
+            $sql = "REPLACE INTO notes (eleveId, classeId, matierreId, note)
+                    VALUES (?, ?, ?, ?)";
+            $this->execute($sql, [$eleveId, $classeId, $matiereId, $note]);
+
+        }
+
+        public function getNbElevesByClasse(int $classeId): int {
+            $sql = "SELECT COUNT(*) as total FROM eleves WHERE idClasse = ?";
+            $result = $this->fetchOne($sql, [$classeId]);
+            return $result['total'] ?? 0;
+        }
 
     }

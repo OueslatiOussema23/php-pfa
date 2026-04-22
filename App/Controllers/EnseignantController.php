@@ -102,25 +102,79 @@
         require_once __DIR__ . '/../../plain.inc.php';
     }
 
+    public function sauvegarderAppel() : void {
+            if($_SERVER["REQUEST_METHOD"] !== "POST"){
+                header("Location: /pfa/index.php?url=enseignant/dashboard");
+                exit;
+            }
+
+            $presences = $_POST['presence'];
+            $classeId = $_POST['classe_id'];
+            $matiereId = $_POST['matiere_id'];
+
+            foreach($presences as $eleveId => $statut){
+                $present = ($statut === "TRUE") ? 1 : 0; 
+                $this->enseignant->enregistrerAppel($eleveId, $classeId, $matiereId, $present);
+            }
+
+            $_SESSION['success'] = TRUE;
+            header("Location: /pfa/index.php?url=enseignant/dashboard");
+            exit;
+    }
+
+    public function sauvegarderNotes() : void {
+        if($_SERVER["REQUEST_METHOD"] !== "POST"){
+            header("Location: /pfa/index.php?url=enseignant/dashboard");
+                exit;
+        }
+        
+        $notes = $_POST['notes'];
+        $classeId = $_POST['classe_id'];
+        $matiereId = $_POST['matiere_id'];
+
+        foreach($notes as $eleveId => $note){
+            $note = str_replace(',', '.', $note);
+            if($note < 0 || $note > 20){
+                $_SESSION['error'] = "La note pour l'élève ID $eleveId doit être comprise entre 0 et 20.";
+                header("Location: /pfa/index.php?url=enseignant/ajouterNotes&classe=$classeId&matiere=$matiereId");
+                exit;
+            }
+            $this->enseignant->enregistrerNote($eleveId, $classeId, $matiereId, $note);
+        }
+        $_SESSION['success'] = "Notes enregistrées avec succès.";
+        header("Location: /pfa/index.php?url=enseignant/selectForm&action=notes");
+        exit;
+    }
+
         
 
         //les methodes : Dashboard, faire l'appel, saisir les notes, et un to do list
         
+        
         public function dashboard() : void {
-            //fournir les donnees necessaires pour creer le dashboard
-            $data = [
-                'enseignant' => $this->enseignant,
-                'classes' => $this->enseignant->getClasses(),
-                'matieres' => $this->enseignant->getMatieres(),
-                'prochainsCours' => $this->enseignant->getProchainsCours(),
-                'nombreEtudiants' => $this->enseignant->getNombreTotalEtudiants(),
-                'appelsAujourdhui' => $this->enseignant->getAppelsAujourdhui(),
-                'devoirsARendre' => $this->enseignant->getDevoirsARendre()
-            ];
-            
-            //l'appel au repertoire des vues "les interfaces"
-            require_once __DIR__  . '/Views/Enseignant/Dashboard.php';
-        }
+            if(!$this->enseignant) {
+                header('Location: /pfa/index.php?url=login');
+                exit;
+            }
+    
+    // Récupérer les données pour le dashboard
+            $classes = $this->enseignant->getClasses();
+            $matieres = $this->enseignant->getMatieres();
+            $nbClasses = count($classes);
+            $nbMatieres = count($matieres);
+        
+        // Statistiques rapides (à adapter selon ta base)
+            $nbEleves = 0;
+            foreach($classes as $classe) {
+            // Récupérer le nombre d'élèves par classe (à implémenter)
+                $nbEleves += $this->enseignant->getNbElevesByClasse($classe['id']);
+            }
+        
+            $titre = "Dashboard Enseignant";
+            $view = "dashboard";
+            require_once __DIR__ . '/../../plain.inc.php';
+    }
+        
 
         //rouer proprement chaque enseignant
         public function routerEns() : bool {

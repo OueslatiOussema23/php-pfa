@@ -48,39 +48,53 @@ ob_start();
         //routage selon role
         //Enseignant
 
-        case '/enseignant/dashboard':
-            if(isset($_SESSION["user"]) && !empty($_SESSION)){
-                if($_SESSION["user"]['role'] === "ENS"){
-                    $view = "dashboard";
-                    require_once 'plain.inc.php';
-                }else{
-                    http_response_code(403);
-                    echo "<h1>ERROR-403 Accès interdit</h1> <br>";
-                    echo "<p>Vous n'avez pas les droits pour accéder à cette page</p> <br>";
-                    echo "<a href='/pfa'>Revenir a la page d'acceuille</a>";
-                } 
-            }else{
-                require_once __DIR__ . '/Views/Auth/log-in.php';
-            }
-            break;
+        
 
         case 'enseignant/selectForm':
             $controller = new EnseignantController();
-            $controller->selectForm();
+            if($controller->routerEns()){
+                $controller->selectForm();
+            }
             break;
         case 'enseignant/processSelection':
             $controller = new EnseignantController();
-            $controller->processSelection();
+            if($controller->routerEns()){
+                $controller->processSelection();
+            }
             break;
 
         case 'enseignant/ficheAppel':
-                $controller = new EnseignantController();
+            $controller = new EnseignantController();
+            if($controller->routerEns()){
                 $controller->ficheAppel();
+            }
             break;
         
         case 'enseignant/ajouterNotes':
             $controller = new EnseignantController();
-            $controller->ajouterNotes();
+            if($controller->routerEns()){
+                $controller->ajouterNotes();
+            }
+            break;
+
+        case 'enseignant/sauvegarderAppel':
+            $controller = new EnseignantController();
+            if($controller->routerEns()){
+                $controller->sauvegarderAppel();
+            }
+            break;
+        
+        case 'enseignant/sauvegarderNotes':
+            $controller = new EnseignantController();
+            if($controller->routerEns()){
+                $controller->sauvegarderNotes();
+            }
+            break;
+        case 'enseignant/dashboard' :
+            $controller = new EnseignantController();
+            if($controller->routerEns()){
+                $controller->dashboard();
+            }
             break;
 
         //Directeur

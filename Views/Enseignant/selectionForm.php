@@ -36,7 +36,7 @@
                             <select name="matiere" id="matiere" class="form-select" required>
                                 <option value="">Sélectionner une matière</option>
                                 <?php foreach($matieres as $matiere): ?>
-                                    <option value="<?= $matiere ?>">
+                                    <option value="<?= $matiere['id'] ?>">
                                         <?= $matiere['nom'] ?>
                                     </option>
                                 <?php endforeach; ?>

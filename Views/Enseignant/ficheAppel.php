@@ -15,11 +15,11 @@
                     <td><?= $i++ ?></td>
                     <td><?= htmlspecialchars($eleve['prenom'] . ' ' . $eleve['nom']) ?></td>
                     <td>
-                        <input type="radio" class="btn-check" name="presence[<?= $eleve['id'] ?>]" id="present_<?= $eleve['id'] ?>" value="present" checked>
+                        <input type="radio" class="btn-check" name="presence[<?= $eleve['id'] ?>]" id="present_<?= $eleve['id'] ?>" value="TRUE">
                         <label class="btn btn-outline-success" for="present_<?= $eleve['id'] ?>">Présent(e)</label>
                     </td>
                     <td>
-                        <input type="radio" class="btn-check" name="presence[<?= $eleve['id'] ?>]" id="absent_<?= $eleve['id'] ?>" value="absent">
+                        <input type="radio" class="btn-check" name="presence[<?= $eleve['id'] ?>]" id="absent_<?= $eleve['id'] ?>" value="FALSE">
                         <label class="btn btn-outline-danger" for="absent_<?= $eleve['id'] ?>">Absent(e)</label>
                     </td>
                 </tr>
