@@ -21,7 +21,7 @@
         public function redirigerSelonRole(string $role) : void {
             switch ($role) {
                 case 'ADMIN' :
-                    header('Location: /Administrateur/dashboard');
+                    header('Location: /pfa/administrateur/dashboard');
                     break;
                 
                 case 'ENS' :

@@ -20,6 +20,22 @@
             $stmt->execute($params);
             return $stmt;
         }
+        
+        protected function get(string $sql){
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            return $stmt;
+        }
+
+        protected function fetchIt(string $sql){
+            $stmt = $this->get($sql);
+            return $stmt->fetch();
+        }
+
+        protected function fetchThem(string $sql){
+            $stmt = $this->get($sql);
+            return $stmt->fetchAll();
+        }
 
         protected function fetchOne(string $sql, array $params = []){
             $stmt = $this->query($sql, $params);
