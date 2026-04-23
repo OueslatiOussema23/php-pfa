@@ -29,10 +29,10 @@
                     break;
                 case 'ADMIN':
                     $role = 'Admin';
-                    $opt = "<a class='nav-link text-white' href='/pfa/administrateur/calendar'>
+                    $opt = "<a class='nav-link text-white' href='/pfa/administrateur/dashboard'>
                                 <i class='bi bi-speedometer2'></i><span class='d-none d-sm-inline ms-2'>Dashboard</span>
                             </a>
-                            <a class='nav-link text-white' href='/pfa/administrateur/dashboard'>
+                            <a class='nav-link text-white' href='/pfa/administrateur/calendar'>
                                 <i class='bi bi-calendar-fill'></i><span class='d-none d-sm-inline ms-2'>Calendrier</span>
                             </a>";
                     break;
