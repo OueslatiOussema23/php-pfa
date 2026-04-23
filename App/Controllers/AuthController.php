@@ -21,15 +21,15 @@
         public function redirigerSelonRole(string $role) : void {
             switch ($role) {
                 case 'ADMIN' :
-                    header('Location: /Administrateur/Dashboard.php');
+                    header('Location: /Administrateur/dashboard');
                     break;
                 
                 case 'ENS' :
-                    header('Location: /pfa/enseignant/ajouterNotes');
+                    header('Location: /pfa/enseignant/dashboard');
                     break;
                 
                 case 'SURV' :
-                    header('Location: /Surveillant/Dashboard.php');
+                    header('Location: /Surveillant/dashboard');
                     break;
                 default :
                     header('Location: /pfa/index.php?url=home');
@@ -61,6 +61,7 @@
         
         //fonction pour la deconexion (supprimer tous les variables de la session et supprimer la session)
         public function LogOut() : void {
+            $this->logger("Logged out for " . $_SESSION["user"]['email']);
             session_unset();
             session_destroy();
             header('Location: /pfa/');
