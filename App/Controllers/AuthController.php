@@ -29,7 +29,7 @@
                     break;
                 
                 case 'SURV' :
-                    header('Location: /Surveillant/dashboard');
+                    header('Location: /pfa/surveillant/dashboard');
                     break;
                 default :
                     header('Location: /pfa/index.php?url=home');

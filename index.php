@@ -12,6 +12,7 @@ ob_start();
     use App\Controllers\AuthController;
     use App\Controllers\EnseignantController;
     use App\Controllers\AdministrateurController;
+    use App\Controllers\SurveillantController;
     use App\Controllers\PageController;
 
     //je recupere l'url et la request method pour faire le routing
@@ -100,6 +101,12 @@ ob_start();
         //Directeur
         case 'administrateur/dashboard':
             $controller = new AdministrateurController();
+            $controller->dashboard();
+            break;
+
+        //Surveillant
+        case 'surveillant/dashboard':
+            $controller = new SurveillantController();
             $controller->dashboard();
             break;
 

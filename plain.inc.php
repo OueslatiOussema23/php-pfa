@@ -38,6 +38,12 @@
                     break;
                 case 'SURV':
                     $role = 'Surveillant';
+                    $opt = "<a class='nav-link text-white' href='/pfa/surveillant/dashboard'>
+                                <i class='bi bi-speedometer2'></i><span class='d-none d-sm-inline ms-2'>Dashboard</span>
+                            </a>
+                            <a class='nav-link text-white' href='/pfa/surveillant/calendar'>
+                                <i class='bi bi-calendar-fill'></i><span class='d-none d-sm-inline ms-2'>Calendrier</span>
+                            </a>";
                     break;
             }
             require_once 'Views/Partials/toolbar.inc.php';
