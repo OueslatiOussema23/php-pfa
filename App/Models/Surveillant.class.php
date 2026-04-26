@@ -67,5 +67,29 @@
             return $absents;
         }
 
+       
+
+        public function getEleveById(int $eleveId): ?array {
+            $sql = "SELECT e.id, e.nom, e.prenom, c.nomClasse
+                    FROM eleves e
+                    LEFT JOIN classes c ON e.idClasse = c.id
+                    WHERE e.id = ?";
+            $result = $this->fetchOne($sql, [$eleveId]);
+            return is_array($result) ? $result : null;
+        }       
+
+        public function creerBillet(int $eleveId, string $dateAbsence, string $motif, int $justifie): int {
+            $sql = "INSERT INTO billets (eleveId, dateAbsence, motif, justifie) VALUES (?, ?, ?, ?)";
+            $this->execute($sql, [$eleveId, $dateAbsence, $motif, $justifie]);
+            return $this->db->lastInsertId();
+        }
+
+        public function getDatesAbsenceByEleve(int $eleveId): array {
+            $sql = "SELECT DISTINCT dateAppel 
+                    FROM appels 
+                    WHERE eleveId = ? AND statut = 0
+                    ORDER BY dateAppel DESC";
+            return $this->fetchAll($sql, [$eleveId]) ?: [];
+        }
 
     }

@@ -110,6 +110,16 @@ ob_start();
             $controller->dashboard();
             break;
 
+        case 'surveillant/billet':
+            $controller = new SurveillantController();
+            $controller->billetForm();
+            break;
+
+        case 'surveillant/sauvegarderBillet':
+            $controller = new SurveillantController();
+            $controller->sauvegarderBillet();
+            break;
+
         default :
             http_response_code(404);
             echo "<h1>ERROR-404 Page introvable</h1> <br>";
