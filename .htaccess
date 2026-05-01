@@ -1,0 +1,6 @@
+RewriteEngine On
+
+# je vais (ce fichier) rediriger toutes les requetes vers ma page index pour avoir un seul point d'entre
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?url=$1 [QSA,L]

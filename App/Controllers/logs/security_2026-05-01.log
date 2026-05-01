@@ -1,0 +1,6 @@
+[TIME: 2026-05-01 13:56:42]	[USER: Martin]	[IP: 127.0.0.1]	[LOG: logged in successfully for prof@school.com]
+[TIME: 2026-05-01 13:56:57]	[USER: Martin]	[IP: 127.0.0.1]	[LOG: Logged out for prof@school.com]
+[TIME: 2026-05-01 13:57:15]	[USER: Admin]	[IP: 127.0.0.1]	[LOG: logged in successfully for admin@school.com]
+[TIME: 2026-05-01 13:57:21]	[USER: Admin]	[IP: 127.0.0.1]	[LOG: Logged out for admin@school.com]
+[TIME: 2026-05-01 13:57:37]	[USER: Noura]	[IP: 127.0.0.1]	[LOG: logged in successfully for noura@school.com]
+[TIME: 2026-05-01 13:57:43]	[USER: Noura]	[IP: 127.0.0.1]	[LOG: Logged out for noura@school.com]
